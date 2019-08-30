@@ -19,14 +19,15 @@ def get_parser():
 if __name__ == '__main__':
 	parser = get_parser()
 	args = parser.parse_args()
-	print('Hello World')
-	instance_file = parser.instance
-	algorithm = parser.algorithm
-	random_seed = parser.randomSeed
-	epsilon = parser.epsilon
-	horizon = parser.horizon
+	instance_file = args.instance
+	algorithm = args.algorithm
+	random_seed = args.randomSeed
+	epsilon = args.epsilon
+	horizon = args.horizon
 
 	np.random.seed(random_seed)
 	agent = Agent(instance_file, algorithm, random_seed, epsilon, horizon)
 
-	print(agent.calculate_regret())
+	expected_regret = agent.calculate_regret()
+
+	print(instance_file, algorithm, random_seed, epsilon, horizon, expected_regret)

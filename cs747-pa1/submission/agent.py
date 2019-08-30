@@ -41,8 +41,5 @@ class Agent():
 			emperical_means[arm_index] = num_successfull_pulls[arm_index]/num_pulls[arm_index]
 			cumulative_reward += reward
 
-		# import pdb; pdb.set_trace();
-			
-
 		return cumulative_reward
 

@@ -24,12 +24,37 @@ def kl_ucb(num_arms, emperical_means, num_pulls, t, epsilon):
 	if t < num_arms:
 		arm = t
 	else:
+		def get_kld(p, q):
+			if p == 1 or p == 0 or q == 0 or q == 1:
+				return 0
+			kld = p*np.log(p/q) + (1-p)*np.log((1-p)/(1-q))
+			return kld
+
 		def solve_for_q(p, rhs_value):
-			pass
+			# Solved via Bisection method
+			q_l = p
+			q_r = 1
+			error_precision = 1e-5
+			num_iterations = 0
+			q = 0.5*(q_l+q_r)
+			while(q_r-q_l>error_precision):
+				kld = get_kld(p,q)
+
+				if abs(kld-rhs_value) < error_precision:
+					break
+				if kld > rhs_value:
+					q_r = q
+				else:
+					q_l = q
+				q = 0.5*(q_l+q_r)
+				num_iterations += 1
+			# import pdb; pdb.set_trace()
+			return q
+
 		q = np.zeros(emperical_means.shape)
 		for i in range(num_arms):
 			rhs_value = (np.log(t) + 3*np.log(np.log(t)))/num_pulls[i]
-			q[i] = solve_for_q(emperical_mean[i], rhs_value)
+			q[i] = solve_for_q(emperical_means[i], rhs_value)
 		arm = np.argmax(q)
 	return arm
 
@@ -44,7 +69,7 @@ def thompson_sampling(num_arms, emperical_means, num_pulls, t, epsilon):
 	return arm
 
 algorithm_dict = {
-	'round_robin': round_robin,
+	'round-robin': round_robin,
 	'epsilon-greedy': epsilon_greedy,
 	'ucb': ucb,
 	'kl-ucb': kl_ucb,
