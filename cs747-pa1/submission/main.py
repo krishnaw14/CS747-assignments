@@ -1,5 +1,6 @@
 import numpy as np
 import argparse
+import sys
 from agent import Agent
 
 def get_parser():
@@ -17,6 +18,8 @@ def get_parser():
 	return parser
 
 if __name__ == '__main__':
+	# print("PYTHON EXECUTION:", sys.argv)
+
 	parser = get_parser()
 	args = parser.parse_args()
 	instance_file = args.instance
@@ -30,4 +33,4 @@ if __name__ == '__main__':
 
 	expected_regret = agent.calculate_regret()
 
-	print(instance_file, algorithm, random_seed, epsilon, horizon, expected_regret)
+	print("{}, {}, {}, {}, {}, {}".format(instance_file, algorithm, random_seed, epsilon, horizon, expected_regret))

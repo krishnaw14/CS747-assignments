@@ -35,26 +35,23 @@ def kl_ucb(num_arms, emperical_means, num_pulls, t, epsilon):
 			q_l = p
 			q_r = 1
 			error_precision = 1e-5
-			num_iterations = 0
 			q = 0.5*(q_l+q_r)
-			while(q_r-q_l>error_precision):
-				kld = get_kld(p,q)
-
-				if abs(kld-rhs_value) < error_precision:
-					break
+			kld = get_kld(p,q)
+			while((abs(rhs_value-kld) > error_precision) and q_r - q_l > error_precision):
+				
 				if kld > rhs_value:
 					q_r = q
 				else:
 					q_l = q
 				q = 0.5*(q_l+q_r)
-				num_iterations += 1
-			# import pdb; pdb.set_trace()
+				kld = get_kld(p,q)
 			return q
 
 		q = np.zeros(emperical_means.shape)
 		for i in range(num_arms):
 			rhs_value = (np.log(t) + 3*np.log(np.log(t)))/num_pulls[i]
 			q[i] = solve_for_q(emperical_means[i], rhs_value)
+		# print(q)
 		arm = np.argmax(q)
 	return arm
 

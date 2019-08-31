@@ -1,0 +1,11 @@
+For bash scripting:
+
+https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash/14203146#14203146
+https://stackoverflow.com/questions/8880603/loop-through-an-array-of-strings-in-bash
+https://ryanstutorials.net/bash-scripting-tutorial/bash-loops.php
+https://stackoverflow.com/questions/2237080/how-to-compare-strings-in-bash
+https://ryanstutorials.net/bash-scripting-tutorial/bash-if-statements.php
+
+For kl-ucb implementation:
+
+https://www.geeksforgeeks.org/program-for-bisection-method/
