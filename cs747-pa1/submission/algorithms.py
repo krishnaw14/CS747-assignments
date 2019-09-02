@@ -34,10 +34,10 @@ def kl_ucb(num_arms, emperical_means, num_pulls, t, epsilon):
 			# Solved via Bisection method
 			q_l = p
 			q_r = 1
-			error_precision = 1e-5
+			ERROR_PRECISION = 1e-5
 			q = 0.5*(q_l+q_r)
 			kld = get_kld(p,q)
-			while((abs(rhs_value-kld) > error_precision) and q_r - q_l > error_precision):
+			while((abs(rhs_value-kld) > ERROR_PRECISION) and q_r - q_l > ERROR_PRECISION):
 				
 				if kld > rhs_value:
 					q_r = q
@@ -51,7 +51,6 @@ def kl_ucb(num_arms, emperical_means, num_pulls, t, epsilon):
 		for i in range(num_arms):
 			rhs_value = (np.log(t) + 3*np.log(np.log(t)))/num_pulls[i]
 			q[i] = solve_for_q(emperical_means[i], rhs_value)
-		# print(q)
 		arm = np.argmax(q)
 	return arm
 
@@ -60,12 +59,11 @@ def thompson_sampling(num_arms, emperical_means, num_pulls, t, epsilon):
 	num_failures = num_pulls - num_successes
 	x_values = np.zeros(emperical_means.shape)
 	for i in range(num_arms):
-		# import pdb; pdb.set_trace()
 		x_values[i] = np.random.beta(num_successes[i]+1, num_failures[i]+1)
 	arm = np.argmax(x_values)
 	return arm
 
-algorithm_dict = {
+ALGORITHM_DICT = {
 	'round-robin': round_robin,
 	'epsilon-greedy': epsilon_greedy,
 	'ucb': ucb,
@@ -74,4 +72,5 @@ algorithm_dict = {
 	}
 
 def get_algorithm_by_name(algorithm_name):
-	return algorithm_dict[algorithm_name]
+	assert algorithm_name in ALGORITHM_DICT.keys(), "Algorithm choices: {}".format(list(ALGORITHM_DICT.keys()))
+	return ALGORITHM_DICT[algorithm_name]

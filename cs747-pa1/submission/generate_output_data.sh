@@ -16,14 +16,14 @@ do
 				
 				if [ "$a" = "epsilon-greedy" ]
 				then
-					for e in "${epsilon-arr[@]}"
+					for e in "${epsilon_arr[@]}"
 					do
-						echo "$i" "$a" "$h" "$seed_counter" "$e"
-						bash bandit.sh --instance ${i} --algorithm ${a} --randomSeed ${seed_counter} --horizon ${h} --epsilon ${e}  > outputData.txt
+						# echo "$i" "$a" "$h" "$seed_counter" "$e"
+						bash bandit.sh --instance ${i} --algorithm ${a} --randomSeed ${seed_counter} --horizon ${h} --epsilon ${e}  
 					done	
 				else
-					echo "$i" "$a" "$h" "$seed_counter" "${epsilon_arr[1]}"
-					bash bandit.sh --instance ${i} --algorithm ${a} --randomSeed ${seed_counter} --horizon ${h} --epsilon ${epsilon_arr[1]} > outputData.txt
+					# echo "$i" "$a" "$h" "$seed_counter" "${epsilon_arr[1]}"
+					bash bandit.sh --instance ${i} --algorithm ${a} --randomSeed ${seed_counter} --horizon ${h} --epsilon ${epsilon_arr[1]} 
 				fi
 			((seed_counter++))
 

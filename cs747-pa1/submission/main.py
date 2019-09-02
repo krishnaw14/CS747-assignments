@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import argparse
 import sys
@@ -18,7 +19,6 @@ def get_parser():
 	return parser
 
 if __name__ == '__main__':
-	# print("PYTHON EXECUTION:", sys.argv)
 
 	parser = get_parser()
 	args = parser.parse_args()
