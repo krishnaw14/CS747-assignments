@@ -24,7 +24,15 @@ def linear_programming(num_states, num_actions, gamma, transition_function, rewa
 					reward_function[state][action][target_state]+gamma*decision_variables[target_state])
 			prob += (lhs>=rhs), "constraint_{}_{}".format(state,action)
 
-	optimisation_result = prob.solve()
+	while True:
+		optimisation_result = prob.solve()
+		flag = True
+		for v in prob.variables():
+			if v.varValue != 0:
+				flag = False
+				break
+		if flag == False:
+			break
 
 	for constraint in prob.constraints:
 		# import pdb; pdb.set_trace() 
@@ -34,11 +42,6 @@ def linear_programming(num_states, num_actions, gamma, transition_function, rewa
 		print(v.name, "=", v.varValue)
 	import pdb; pdb.set_trace()
 
-	# while True:
-	# 	optimisation_result = prob.solve()
-	# 	print(LpStatus[prob.status])
-	# 	if LpStatus[prob.status] == "Optimal":
-	# 		import pdb; pdb.set_trace()
 
 def howard_policy_iteration(num_states, num_actions, gamma, transition_function, reward_function):
 
