@@ -1,0 +1,10 @@
+Linear Programming 
+
+https://github.com/AnnaNican/optimizers
+https://www.coin-or.org/PuLP/index.html
+
+Howard Policy Iteration
+
+https://harderchoices.com/2018/02/26/dynamic-programming-in-python-reinforcement-learning/
+https://www.analyticsvidhya.com/blog/2018/09/reinforcement-learning-model-based-planning-dynamic-programming/
+
