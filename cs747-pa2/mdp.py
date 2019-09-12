@@ -12,7 +12,7 @@ class MDP():
 		self.num_states = int(mdp_content[0])
 		self.num_actions = int(mdp_content[1])
 		self.type = mdp_content[-1].split()[0]
-		self.gamma = float(mdp_content[-2]) if self.type == 'continuing' else 1
+		self.gamma = float(mdp_content[-2])  #if self.type == 'continuing' else 1
 		
 		self.done = False # To denote termination
 		self.transition_function = np.zeros((self.num_states, self.num_actions, self.num_states))

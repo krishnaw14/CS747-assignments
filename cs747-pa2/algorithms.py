@@ -3,41 +3,33 @@ import numpy as np
 
 def linear_programming(num_states, num_actions, gamma, transition_function, reward_function):
 
-	prob = pulp.LpProblem('MDP Linear Solver', pulp.LpMinimize)
+	prob = pulp.LpProblem('MDP Linear Solver', LpMinimize)
 
 	# Define Decision Variable
 	decision_variables = []
 	for i in range(num_states):
-		var = pulp.LpVariable('X' + str(i)) #make variables binary
+		var = LpVariable('X' + str(i)) #make variables binary
 		decision_variables.append(var)
 
 	# Define Objective
-	prob += sum(decision_variables)
+	objective = sum(decision_variables)
+	# for var in decision_variables:
+	# 	objective += var
+	prob += objective
 
 	# Define Constraints
 	for state in range(num_states):
-		lhs = decision_variables[i]
+		lhs = decision_variables[state]
 		for action in range(num_actions):
+			# rhs = np.sum(transition_function[state][action]*(reward_function[state][action] + gamma*decision_variables))
 			rhs = 0
 			for target_state in range(num_states):
 				rhs += transition_function[state][action][target_state]*(
 					reward_function[state][action][target_state]+gamma*decision_variables[target_state])
-			prob += (lhs>=rhs), "constraint_{}_{}".format(state,action)
+			prob += (lhs>=rhs)
 
-	while True:
-		optimisation_result = prob.solve()
-		flag = True
-		for v in prob.variables():
-			if v.varValue != 0:
-				flag = False
-				break
-		if flag == False:
-			break
+	optimization_result = prob.solve()
 
-	for constraint in prob.constraints:
-		# import pdb; pdb.set_trace() 
-		print("constraint:", prob.constraints[constraint].value() - prob.constraints[constraint].constant)
-		# print(prob.constraints[constraint])
 	for v in prob.variables():
 		print(v.name, "=", v.varValue)
 	import pdb; pdb.set_trace()
