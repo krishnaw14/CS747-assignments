@@ -11,6 +11,21 @@ def evaluate_action_value_function(value_function, num_states, num_actions, gamm
 				)
 	return action_value_function
 
+def evaluate_policy(policy, num_states, num_actions, gamma, transition_function, reward_function):
+		# See notes.txt for derivation: Solving for V = [I-gammaT]^-1Alpha
+		alpha = np.zeros((num_states,1))
+		T = np.zeros((num_states, num_states))
+		for state in range(num_states):
+			action = policy[state]
+			alpha[state] = np.sum(transition_function[state][action]*reward_function[state][action])
+			T[state][:] = transition_function[state][action]
+		try:
+			value_function = np.matmul(np.linalg.inv(np.eye(num_states)-gamma*T), alpha)
+		except np.linalg.LinAlgError as e:
+			print(e, "Cannot Perform Policy Evaluation!")
+			exit(1)
+		return value_function
+
 def linear_programming(num_states, num_actions, gamma, transition_function, reward_function):
 
 	prob = pulp.LpProblem('MDP Linear Solver', LpMinimize)
@@ -53,37 +68,23 @@ def linear_programming(num_states, num_actions, gamma, transition_function, rewa
 
 def howard_policy_iteration(num_states, num_actions, gamma, transition_function, reward_function):
 
-	def evaluate_policy(policy, first_call=False):
-		# See notes.txt for derivation: Solving for V = [I-gammaT]^-1Alpha
-		alpha = np.zeros((num_states,1))
-		T = np.zeros((num_states, num_states))
-		for state in range(num_states):
-			action = policy[state]
-			alpha[state] = np.sum(transition_function[state][action]*reward_function[state][action])
-			T[state][:] = transition_function[state][action]
-		try:
-			value_function = np.matmul(np.linalg.inv(np.eye(num_states)-gamma*T), alpha)
-		except np.linalg.LinAlgError:
-			import pdb; pdb.set_trace()
-		return value_function
-
+	# Randomly initialize a policy. This will be changed during policy improvement.
 	policy = np.random.randint(low=0, high=num_actions, size=(num_states,))
 	improvable_state_exists = True
-	num_iterations = 0
+
+	# Iterate until the existence of an improvable state
 	while improvable_state_exists:
-		value_function = evaluate_policy(policy)
+		value_function = evaluate_policy(policy, num_states, num_actions, gamma, transition_function, reward_function)
 		action_value_function = evaluate_action_value_function(value_function, num_states, num_actions, gamma,
 			transition_function, reward_function)
 
-		flag = True
+		flag = True # To check if an improvable state was detected for the give policy
 		for state in range(num_states):
-			if policy[state] != np.argmax(action_value_function[state]):
-				policy[state] = np.argmax(action_value_function[state])
+			if policy[state] != np.argmax(action_value_function[state]): # Check if there is an improvable state
+				policy[state] = np.argmax(action_value_function[state]) # Flip the state if there is an improvable state
 				flag = False
-		num_iterations += 1
 
-		if flag == True:
+		if flag == True: # If policy is not improved, it implies that there are no improvable state. 
 			improvable_state_exists = False
-	print('Number of Iterations:', num_iterations)
 
 	return value_function.squeeze(), policy
