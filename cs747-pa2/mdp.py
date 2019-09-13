@@ -27,8 +27,6 @@ class MDP():
 				self.transition_function[state][action] = np.float32(transition_line.split())
 				line_counter += 1
 
-		# import pdb; pdb.set_trace()
-
 	def get_reward(self, state, action, target_state):
 		reward =  self.reward_function[state][action][target_state]
 		return reward

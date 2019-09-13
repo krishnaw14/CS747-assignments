@@ -12,12 +12,8 @@ def get_parser():
 	return parser
 
 if __name__ == '__main__':
-	np.random.seed(0)
 	parser = get_parser()
 	args = parser.parse_args()
 
 	agent = Agent(args.mdp, args.algorithm)
 	agent.construct_policy()
-	# mdp = MDP(args.mdp)
-	 
-	# agent = Agent(args.mdp, args.algorithm)

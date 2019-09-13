@@ -17,16 +17,10 @@ class Agent():
 		else:
 			return howard_policy_iteration
 
-	def take_action(self):
-		pass
-
 	def construct_policy(self):
 		value_function, policy = self.algorithm(self.mdp.num_states, self.mdp.num_actions, self.mdp.gamma, 
 			self.mdp.transition_function, self.mdp.reward_function)
-		# import pdb; pdb.set_trace()
-		for state in range(self.mdp.num_states):
-			print(value_function[state,0], policy[state,0])
 
-	def howard_policy_iteration(self):
-		pass
+		for state in range(self.mdp.num_states):
+			print(value_function[state], policy[state])
 
