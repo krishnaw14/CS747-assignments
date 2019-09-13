@@ -1,0 +1,22 @@
+___POLICY EVALUATION___
+
+I computed the closed form solution (in matrix form) of the value function by manipulating the bellman equation as follows:
+
+For a given state s and policy \pi, Bellman Equation is as follows: V^\pi (s) = \sum_{s'} T(s, \pi(s), s') [R(s,\pi(s),s') + \gamma V(s')]
+
+\implies V^\pi (s) = \sum_{s'} T(s, \pi(s), s') R(s,\pi(s),s') + \gamma \sum_{s'} T(s, \pi(s), s') V(s')
+
+Now I denote the first term of the RHS by \alpha^{\pi} (s) (= \sum_{s'} T(s, \pi(s), s') R(s,\pi(s),s')). The second term can be seen as a linear combination of V(s') weighted by T(s, \pi(s), s'). 
+
+So writing the above bellman equation for all states in a matrix format:
+
+[V^\pi (s_1), V^\pi (s_2) ... V^\pi (s_n) ]^T = [\alpha^\pi (s_1), \alpha^\pi (s_2) ... \alpha^\pi (s_n) ]^T + \gamma T [V^\pi (s_1), V^\pi (s_2) ... V^\pi (s_n) ]^T 
+
+where T is a nxn matrix with each row denoting the transition probabilities for state s for the given policy (Second element of the first row of T is the probability that the agent will end up at state 2 starting from state 1 and following the given policy).
+
+Essentially we have: V = \alpha + \gamma TV
+
+\implies V = (I-\gamma T)\alpha
+
+THIS FORMULA HAS BEEN USED FOR POLICY EVALUATION IN HPI IMPLEMENTATION.
+
