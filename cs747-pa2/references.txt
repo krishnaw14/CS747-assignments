@@ -6,5 +6,8 @@ https://www.coin-or.org/PuLP/index.html
 Howard Policy Iteration
 
 https://harderchoices.com/2018/02/26/dynamic-programming-in-python-reinforcement-learning/
-https://www.analyticsvidhya.com/blog/2018/09/reinforcement-learning-model-based-planning-dynamic-programming/
 https://www.cs.mcgill.ca/~dprecup/courses/AI/Lectures/ai-lecture16.pdf
+
+Bash Script
+
+https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash/14203146#14203146
