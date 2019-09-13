@@ -11,6 +11,6 @@ Solution of MDPs using Linear Programming and Howard Policy Iteration. Reconstru
 
 To Do:
 
-- [ ] Implement Linear Programming
-- [x] Implement HPI
+- [x] Implement Linear Programming
+- [ ] Implement HPI
 - [ ] MDP Reconstruction
