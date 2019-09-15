@@ -20,3 +20,8 @@ Essentially we have: V = \alpha + \gamma TV
 
 THIS FORMULA HAS BEEN USED FOR POLICY EVALUATION IN HPI IMPLEMENTATION.
 
+___MDP RECONSTRUCTION___
+
+Please refer to mdp_reconstruction.py for the logic used to construct the MDP. The basic idea for how an action can be optimal for a state in short term but suboptimal in long term. The script mdp_reconstruction.py can be run independently ($ python3 mdp_reconstruction.py for generation of mdp). 
+
+Note that for different values of gamma, I used linear programming to generate optimal policies to check if I am getting 3 distinct policies for the given gamma value ranges. 
