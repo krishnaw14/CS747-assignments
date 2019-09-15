@@ -13,17 +13,24 @@ def evaluate_action_value_function(value_function, num_states, num_actions, gamm
 
 def evaluate_policy(policy, num_states, num_actions, gamma, transition_function, reward_function):
 		# See notes.txt for derivation: Solving for V = [I-gammaT]^-1Alpha
+
 		alpha = np.zeros((num_states,1))
 		T = np.zeros((num_states, num_states))
 		for state in range(num_states):
 			action = policy[state]
 			alpha[state] = np.sum(transition_function[state][action]*reward_function[state][action])
-			T[state][:] = transition_function[state][action]
+			T[state][:] = transition_function[state][action][0:num_states]
 		try:
-			value_function = np.matmul(np.linalg.inv(np.eye(num_states)-gamma*T), alpha)
+			if gamma == 1:
+				value_function = np.matmul(np.linalg.inv(np.eye(num_states-1)-gamma*T[0:-1,0:-1]), alpha[0:-1])
+			else:
+				value_function = np.matmul(np.linalg.inv(np.eye(num_states)-gamma*T), alpha)
 		except np.linalg.LinAlgError as e:
 			print(e, "Cannot Perform Policy Evaluation!")
 			exit(1)
+		if gamma == 1:
+			value_function = np.concatenate((value_function,[[0]]) )
+
 		return value_function
 
 def linear_programming(num_states, num_actions, gamma, transition_function, reward_function):
@@ -49,6 +56,9 @@ def linear_programming(num_states, num_actions, gamma, transition_function, rewa
 				rhs += transition_function[state][action][target_state]*(
 					reward_function[state][action][target_state]+gamma*decision_variables[target_state])
 			prob += (lhs>=rhs)
+
+	if gamma == 1:
+		prob += decision_variables[-1]==0
 
 	# Solve the Linear Programming Formulation
 	optimization_result = prob.solve()

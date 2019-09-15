@@ -21,4 +21,4 @@ esac
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
-python main.py --mdp ${MDP} --algorithm ${ALGORITHM} 
+python3 main.py --mdp ${MDP} --algorithm ${ALGORITHM} 
