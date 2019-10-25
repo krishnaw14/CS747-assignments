@@ -7,10 +7,4 @@ Solution of Multi-arm Bandit Problem and analysis of performance of different sa
 
 ## Assignment 2
 
-Solution of MDPs using Linear Programming and Howard Policy Iteration. Reconstruction of MDPs based on discount factor.
-
-To Do:
-
-- [x] Implement Linear Programming
-- [x] Implement HPI
-- [ ] MDP Reconstruction
+Solution of MDPs using Linear Programming and Howard Policy Iteration. Reconstruction of a family of MDPs (differing in discount factor) based on same value function for a certain range of discount factors.
