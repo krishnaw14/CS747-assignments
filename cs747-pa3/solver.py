@@ -3,7 +3,7 @@ from algorithms import linear_programming
 
 class Solver:
 
-	def __init__(self, data_path):
+	def __init__(self, data_path, target_path=None):
 
 		with open(data_path) as f:
 			data = f.readlines()
@@ -12,9 +12,13 @@ class Solver:
 		self.num_actions = int(data[1])
 		self.gamma = float(data[2])
 
-		self.trajectory = np.array([np.float32(d.split()) for d in data[3:]])
+		self.trajectory = np.array([np.float32(d.split()) for d in data[3:-1]])
+		self.last_state = int(data[-1])
 
-		# import pdb; pdb.set_trace()
+		self.gamma_list = np.array([self.gamma**i for i in range(len(self.trajectory))])
+
+		if target_path is not None:
+			self.target = np.loadtxt(target_path)
 
 	def model_based_learning(self):
 		# DOES NOT WORK AS ALL STATE-ACTION PAIRS ARE NOT ENCOUNTERED IN THE GIVEN TRAJECTORY.
@@ -46,18 +50,26 @@ class Solver:
 		value_functions = np.zeros((self.num_states,1))
 		total_visits = np.zeros((self.num_states,1))
 
-		for sample in self.trajectory:
-			if len(sample) == 1:
-				total_visits[int(sample[0])]+=1
-			else:
-				total_visits[int(sample[0])]+=1
-				value_functions[int(sample[0])] += float(sample[-1])
-
-		import pdb; pdb.set_trace()
-
-		value_functions /= total_visits
 		
-		print(value_functions)
+
+		# first_occurance = []
+		for state in range(self.num_states):
+			indices = np.where(self.trajectory[:,0] == state)[0]
+
+			reward = 0.0
+			for start_idx in indices:
+				reward += np.sum([self.gamma_list[0:len(self.trajectory)-start_idx]*self.trajectory[start_idx:,-1] ] ) 
+
+			value_functions[state] = reward/len(indices)
+
+		print('Answer:', value_functions)
+		print('Expected:', self.target)
+
+		# import pdb; pdb.set_trace()
+
+		error = np.sum( (value_functions.squeeze()-self.target)**2 )
+		print("Error: ", error)
+
 
 
 
