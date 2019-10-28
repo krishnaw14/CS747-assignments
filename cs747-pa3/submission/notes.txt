@@ -1,0 +1,23 @@
+The following approaches were tried:
+
+1. Model Based Learning
+
+Trying to learn the transition and reward function and then solving the MDP (using linear programming approach as used in Assignment 2).
+
+This approach did not work because the learned model was not valid as all state-action pairs were not visited in the data provided.
+
+2. Every Visit Monte Carlo (Answers are printed using this approach)
+
+Here value function is taken as the average of the long term reward of trajectories starting from a given state whenever that state is encountered in the given data trajectory. 
+
+This approach worked considerably well for the data provided. 
+
+Error (as defined in the problem statement): 0.00121 for data 1 and 2.2779544629693984e-05 for data 2
+
+3. TD (lambda) learning
+
+After finding the optimal lambda and alpha for the given data files, this approach gave a better estimate of the value function (less error) as compared to every visit monte carlo learning but as the grid search over alpha and lambda takes considerable time, every Visit Monte Carlo answers are printed on running the files. 
+
+Error after grid search (as defined in the problem statement): 
+
+data1: 6.3071533208557375e-06 (optimal values: lambda = 0.9823061224489795, alpha= 0.029163265306122448)

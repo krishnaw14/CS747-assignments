@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np 
 from algorithms import linear_programming
 
@@ -17,7 +18,7 @@ class Solver:
 
 		self.gamma_list = np.array([self.gamma**i for i in range(len(self.trajectory))])
 
-		if target_path is not None:
+		if target_path is not None and target_path != data_path:
 			self.target = np.loadtxt(target_path)
 
 	def model_based_learning(self):
@@ -47,10 +48,8 @@ class Solver:
 		print(optimal_value_function)
 
 	def monte_carlo_learning(self):
+		# USED FOR PREDICTION
 		value_functions = np.zeros((self.num_states,1))
-		total_visits = np.zeros((self.num_states,1))
-
-		
 
 		# first_occurance = []
 		for state in range(self.num_states):
@@ -58,17 +57,56 @@ class Solver:
 
 			reward = 0.0
 			for start_idx in indices:
-				reward += np.sum([self.gamma_list[0:len(self.trajectory)-start_idx]*self.trajectory[start_idx:,-1] ] ) 
+				reward += np.sum([self.gamma_list[0:len(self.trajectory)-start_idx]*self.trajectory[start_idx:,-1] ] )
+				# break 
 
 			value_functions[state] = reward/len(indices)
+
+		for value_function in value_functions.squeeze():
+			print(value_function)
+
+		# print('Answer:', value_functions.squeeze())
+		# print('Expected:', self.target)
+
+		# error = np.sum( (value_functions.squeeze()-self.target)**2 )
+		# print("Error: ", error)
+
+	def td_learning(self, alpha=0.5):
+
+		value_functions = np.zeros((self.num_states,1))
+		for i in range(len(self.trajectory)):
+			state = int(self.trajectory[i][0])
+			target_state = int(self.last_state) if i == len(self.trajectory)-1 else int(self.trajectory[i+1][0])
+			reward = self.trajectory[i][-1]
+
+			value_functions[state] += alpha*(reward+self.gamma*value_functions[target_state] - value_functions[state])
 
 		print('Answer:', value_functions)
 		print('Expected:', self.target)
 
-		# import pdb; pdb.set_trace()
-
 		error = np.sum( (value_functions.squeeze()-self.target)**2 )
 		print("Error: ", error)
+		return error
+
+	def td_lambda(self, lambda_=0.95, alpha=0.1):
+		# TD-lambda learning with eligibility trace
+
+		value_functions = np.zeros((self.num_states,1))
+		eligibility = np.zeros((self.num_states,1))
+
+		total_time = len(self.trajectory)
+
+		for t in range(total_time):
+			state = int(self.trajectory[t][0])
+			target_state = int(self.last_state) if t == len(self.trajectory)-1 else int(self.trajectory[t+1][0])
+			reward = self.trajectory[t][-1]
+			eligibility[state] += 1.0
+			value_functions += alpha*eligibility*(reward+self.gamma*value_functions[target_state] - value_functions[state])
+			eligibility *= lambda_ * self.gamma 
+
+		# error = np.sum( (value_functions.squeeze()-self.target)**2 )
+
+		# return error
 
 
 

@@ -1,0 +1,5 @@
+https://web.stanford.edu/group/pdplab/pdphandbook/handbookch10.html
+
+https://towardsdatascience.com/reinforcement-learning-td-%CE%BB-introduction-686a5e4f4e60
+
+https://amreis.github.io/ml/reinf-learn/2017/11/02/reinforcement-learning-eligibility-traces.html
