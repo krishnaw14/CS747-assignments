@@ -21,3 +21,5 @@ After finding the optimal lambda and alpha for the given data files, this approa
 Error after grid search (as defined in the problem statement): 
 
 data1: 6.3071533208557375e-06 (optimal values: lambda = 0.9823061224489795, alpha= 0.029163265306122448)
+
+For data2: the above values of alpha and lambda were not optimal
