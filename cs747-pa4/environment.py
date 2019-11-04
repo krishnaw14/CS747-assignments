@@ -13,9 +13,7 @@ class WindyGridWorld(object):
 		self.initial_state = [3, 0]
 		self.terminal_state = [3, 7]
 
-		self.done = False
-		self.reward = -1
-		self.state = self.initial_state
+		self.reset()
 
 	def get_next_state(self, action):
 		# Apply wind
@@ -36,7 +34,6 @@ class WindyGridWorld(object):
 			self.reward = 0
 
 	def step(self, action):
-
 		assert action >=0 and action <= 3, "Invalid Action - only 4 actions (0-3) are allowed"
 
 		self.get_next_state(action)
@@ -44,8 +41,9 @@ class WindyGridWorld(object):
 
 		return self.state, self.reward, self.done
 
-
-
-
+	def reset(self):
+		self.state = self.initial_state
+		self.reward = -1
+		self.done = False
 
 
