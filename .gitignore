@@ -1,6 +1,6 @@
 .DS_Store
 __pycache__
-cs747-pa1
-cs747-pa2
-cs747-pa3
+cs747-pa1/
+cs747-pa2/
+cs747-pa3/
 *.gz
