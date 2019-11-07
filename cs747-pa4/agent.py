@@ -1,11 +1,11 @@
 import numpy as np 
 import matplotlib.pyplot as plt
-from environment import WindyGridWorld
+from environment import WindyGridWorld, WindyGridWorldwithKingMoves, StochasticWindyGridWorld
 
 class SarsaAgent():
 
 	def __init__(self, alpha, epsilon, save_plot_path):
-		self.env = WindyGridWorld()
+		self.env = WindyGridWorldwithKingMoves()
 
 		self.alpha = alpha
 		self.epsilon = epsilon
@@ -13,6 +13,7 @@ class SarsaAgent():
 		self.Q_values = np.zeros((self.env.num_rows, self.env.num_columns, self.env.num_actions))
 
 		self.save_plot_path = save_plot_path
+		# import pdb; pdb.set_trace()
 
 	def get_action(self, state):
 		choice = np.random.choice([0,1], p=[self.epsilon, 1-self.epsilon])
@@ -30,7 +31,7 @@ class SarsaAgent():
 		action = self.get_action(state)
 
 		while state != self.env.terminal_state:
-			
+
 			next_state, reward, done = self.env.step(state, action)
 			next_action = self.get_action(next_state)
 
@@ -44,20 +45,26 @@ class SarsaAgent():
 
 		return time_steps
 
-	def learn(self):	
+	def learn(self, num_seed_runs):	
 
-		time_step_values, episode_values = [], []
 		num_episodes = 180
-		time_steps = 0
+		final_time_step_values, final_episode_values = np.zeros((num_episodes,)), np.zeros((num_episodes,))
 
-		for i in range(num_episodes):
-			time_step = self.play_episode()
+		for seed in range(num_seed_runs):
+			np.random.seed(seed+4)
+			time_step_values, episode_values = [], []
+			time_steps = 0
+			for i in range(num_episodes):
+				time_step = self.play_episode()
 
-			time_steps += time_step
-			time_step_values.append(time_steps)
-			episode_values.append(i)
+				time_steps += time_step
+				time_step_values.append(time_steps)
+				episode_values.append(i)
+			final_time_step_values += np.array(time_step_values)
+			final_episode_values += np.array(episode_values)
 
-		plt.plot(time_step_values, episode_values)
+
+		plt.plot(np.int32(final_time_step_values/num_seed_runs), np.int32(final_episode_values/num_seed_runs))
 		plt.xlabel('Time Steps')
 		plt.ylabel('Episodes')
 		plt.title('Episodes vs Time Steps')
