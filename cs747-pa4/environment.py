@@ -33,9 +33,38 @@ class WindyGridWorld(object):
 			return -1
 
 	def step(self, state, action):
-		assert action >=0 and action <= 3, "Invalid Action - only 4 actions (0-3) are allowed"
+		assert action >=0 and action < self.num_actions, "Invalid Action - only 4 actions (0-3) are allowed"
 		return self.get_next_state(state, action), self.get_reward(state), (state == self.terminal_state)
 
 	def reset(self):
 		return self.initial_state.copy()
+
+class WindyGridWorldwithKingMoves(WindyGridWorld):
+	def __init__(self):
+		super(WindyGridWorldwithKingMoves, self).__init__()
+		self.num_actions = 8 
+
+	def get_next_state(self, state, action):
+		if action == 0: # left
+			new_state = [max(state[0] - self.wind_strength[state[1]], 0), max(0, state[1]-1)]
+		elif action == 1: # right
+			new_state = [max(state[0] - self.wind_strength[state[1]], 0), min(state[1] + 1, self.num_columns-1)]
+		elif action == 2: # up
+			new_state = [max(0, state[0]-1-self.wind_strength[state[1]]), state[1]]
+		elif action == 3: # down
+			new_state = [max(min(state[0] + 1 - self.wind_strength[state[1]], self.num_rows-1),0), state[1]]
+		elif action == 4: # left-up
+			new_state = [max(state[0]-1-self.wind_strength[state[1]], 0), max(0, state[1]-1)]
+		elif action == 5: # left-down
+			new_state = [max(min(state[0]+1-self.wind_strength[state[1]],self.num_rows-1), 0), max(0, state[1]-1)]
+		elif action == 6: # right-up
+			new_state = [max(state[0]-1-self.wind_strength[state[1]], 0), min(state[1] + 1, self.num_columns-1)]
+		elif action == 7: # right-down
+			new_state = [max(min(state[0]+1-self.wind_strength[state[1]],self.num_rows-1), 0), min(state[1] + 1, self.num_columns-1)]
+
+		return new_state
+
+
+
+
 
