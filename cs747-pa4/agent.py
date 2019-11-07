@@ -4,8 +4,8 @@ from environment import WindyGridWorld, WindyGridWorldwithKingMoves, StochasticW
 
 class SarsaAgent():
 
-	def __init__(self, alpha, epsilon, save_plot_path):
-		self.env = WindyGridWorldwithKingMoves()
+	def __init__(self, env, alpha, epsilon, save_plot_path):
+		self.env = env
 
 		self.alpha = alpha
 		self.epsilon = epsilon
@@ -54,6 +54,7 @@ class SarsaAgent():
 			np.random.seed(seed+4)
 			time_step_values, episode_values = [], []
 			time_steps = 0
+			self.Q_values = np.zeros((self.env.num_rows, self.env.num_columns, self.env.num_actions))
 			for i in range(num_episodes):
 				time_step = self.play_episode()
 
@@ -63,12 +64,14 @@ class SarsaAgent():
 			final_time_step_values += np.array(time_step_values)
 			final_episode_values += np.array(episode_values)
 
+		# import pdb; pdb.set_trace()
 
-		plt.plot(np.int32(final_time_step_values/num_seed_runs), np.int32(final_episode_values/num_seed_runs))
+
+		plt.plot(np.int32(final_time_step_values/num_seed_runs), np.int32(final_episode_values/num_seed_runs), label=self.save_plot_path)
 		plt.xlabel('Time Steps')
 		plt.ylabel('Episodes')
 		plt.title('Episodes vs Time Steps')
-		plt.savefig(self.save_plot_path)
-		plt.clf()
+		# plt.savefig(self.save_plot_path)
+		# plt.clf()
 
 		
