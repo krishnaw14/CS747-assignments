@@ -42,7 +42,8 @@ if __name__ == '__main__':
 		agent.learn(num_seed_runs = args.num_seed_runs)
 
 	if args.stochastic:
-		print('----------------- Stocastic with KingMoves -----------------')
+		print('----------------- Stochastic with KingMoves -----------------')
 		env = StochasticWindyGridWorld()
 		agent = SarsaAgent(env, alpha=0.5, epsilon=0.1, save_plot_path='plots/stochastic.png')
 		agent.learn(num_seed_runs = args.num_seed_runs)
+

@@ -15,7 +15,6 @@ class SarsaAgent():
 		self.Q_values = np.zeros((self.env.num_rows, self.env.num_columns, self.env.num_actions))
 
 		self.save_plot_path = save_plot_path
-		# import pdb; pdb.set_trace()
 
 	def get_action(self, state):
 		choice = np.random.choice([0,1], p=[self.epsilon, 1-self.epsilon])
@@ -84,7 +83,7 @@ class SarsaAgent():
 		plt.xlabel('Time Steps')
 		plt.ylabel('Episodes')
 		plt.title('Episodes vs Time Steps')
-		# plt.savefig(self.save_plot_path)
-		# plt.clf()
+		plt.savefig(self.save_plot_path)
+		plt.clf()
 
 		
