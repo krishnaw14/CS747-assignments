@@ -35,4 +35,4 @@ By default, the code runs for 10 seed values. For a different number of seed run
 
 `$ ./run.sh --baseline --kingmoves --num_seed_runs 20`  
 
-The bash script run.sh uses python3 to call the main script and has been tested on sl2 server.
+The bash script run.sh uses python3 to call the main script and has been tested on IITB CSE lab SL2 servers.
